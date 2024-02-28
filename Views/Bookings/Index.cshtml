@@ -1,0 +1,74 @@
+﻿@model List<Booking>
+@{
+	ViewData["Title"] = "Bookings";
+	bool searchPerformed = ViewData["SearchPerformed"] as bool? ?? false;
+	string searchString = ViewData["SearchString"] as string;
+
+}
+
+<h2>Bookings</h2>
+@if (Model.Any())
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>
+					Booking ID
+				</th>
+				<th>
+					UserName
+				</th>
+				<th>
+					Description
+				</th>
+				<th>
+					Action
+				</th>
+
+			</tr>
+		</thead>
+		<tbody>
+			@foreach(var booking in Model)
+			{
+				<tr>
+					<td> @booking.BookingId</td>
+					<td> @booking.Name</td>
+					<td>@booking.Description</td>
+					<td>
+						<a asp-action="Details" asp-route-id ="@booking.BookingId" class="btn btn-info">Details</a>
+						<a asp-action="Delete" asp-route-id="@booking.BookingId" class="btn btn-danger">Delete</a>
+						<!-- Link to view flights-->
+
+						<a asp-controller="Flights" asp-action="Index" asp-route-bookingId="@booking.BookingId" class="btn btn-warning">View Flights</a>
+						<a asp-controller="RentalCars" asp-action="Index" asp-route-bookingId="@booking.BookingId" class="btn btn-secondary">View RentalCars</a>
+						<a asp-controller="Hotels" asp-action="Index" asp-route-bookingId="@booking.BookingId" class="btn btn-success">View Hotels</a>
+					</td>
+
+				</tr>
+			}
+		</tbody>
+
+	</table>
+
+
+
+
+
+
+}
+else
+{
+	if (searchPerformed)
+	{
+		<p>No username made booking with name "@searchString".</p>
+	}
+	else
+
+	{
+		<p>No bookings available</p>
+	}
+}
+
+<p class="nav-item">
+	<a asp-area="" asp-controller="Bookings" asp-action="Create" class="btn btn-primary">Create Booking</a>
+</p>
